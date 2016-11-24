@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Utility\Lock;
+namespace Neos\Utility\Lock;
 
 /*
  * This file is part of the Neos.Utility.Lock package.
@@ -29,7 +29,7 @@ class Lock
     protected static $lockManager;
 
     /**
-     * @var \TYPO3\Flow\Utility\Lock\LockStrategyInterface
+     * @var \Neos\Utility\Lock\LockStrategyInterface
      */
     protected $lockStrategy;
 

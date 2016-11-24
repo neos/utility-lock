@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Utility\Lock;
+namespace Neos\Utility\Lock;
 
 /*
  * This file is part of the Neos.Utility.Lock package.

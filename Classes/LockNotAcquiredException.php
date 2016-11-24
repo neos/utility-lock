@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Utility\Lock;
+namespace Neos\Utility\Lock;
 
 /*
  * This file is part of the Neos.Utility.Lock package.
@@ -17,6 +17,6 @@ namespace TYPO3\Flow\Utility\Lock;
  * This exception is thrown by locking strategies if the lock could not be acquired.
  *
  */
-class LockNotAcquiredException extends \TYPO3\Flow\Exception
+class LockNotAcquiredException extends \Neos\Flow\Exception
 {
 }
