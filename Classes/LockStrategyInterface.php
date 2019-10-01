@@ -21,9 +21,10 @@ interface LockStrategyInterface
     /**
      * @param string $subject
      * @param boolean $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock.
+     * @param boolean $nonblocking true to, acquire the lock in nonblocking mode, false for a blocking lock lock.
      * @return void
      */
-    public function acquire(string $subject, bool $exclusiveLock);
+    public function acquire(string $subject, bool $exclusiveLock, bool $nonblocking = false);
 
     /**
      * @return boolean true on success, false otherwise
