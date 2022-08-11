@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Utility\Lock\Tests\Unit;
 
 /*
@@ -25,7 +26,7 @@ class LockTest extends \PHPUnit\Framework\TestCase
     /**
      * @var string
      */
-    protected $lockFileName;
+    protected string $lockFileName;
 
     public static function setUpBeforeClass(): void
     {

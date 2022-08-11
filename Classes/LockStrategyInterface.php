@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Utility\Lock;
 
 /*
@@ -20,13 +21,13 @@ interface LockStrategyInterface
 {
     /**
      * @param string $subject
-     * @param boolean $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock.
+     * @param bool $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock.
      * @return void
      */
-    public function acquire(string $subject, bool $exclusiveLock);
+    public function acquire(string $subject, bool $exclusiveLock): void;
 
     /**
-     * @return boolean true on success, false otherwise
+     * @return bool true on success, false otherwise
      */
     public function release(): bool;
 }

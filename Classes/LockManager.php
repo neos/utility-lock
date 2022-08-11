@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Utility\Lock;
 
 /*
@@ -19,12 +20,12 @@ class LockManager
     /**
      * @var string
      */
-    protected $lockStrategyClassName;
+    protected string $lockStrategyClassName;
 
     /**
      * @var array
      */
-    protected $lockStrategyOptions;
+    protected array $lockStrategyOptions;
 
     /**
      * LockManager constructor.
