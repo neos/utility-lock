@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Utility\Lock;
 
 /*
@@ -21,25 +22,17 @@ use Neos\Utility;
  */
 class FlockLockStrategy implements LockStrategyInterface
 {
-
     /**
      * @var string
      */
-    protected $temporaryDirectory;
-
-    /**
-     * Identifier used for this lock
-     *
-     * @var string
-     */
-    protected $id;
+    protected string $temporaryDirectory;
 
     /**
      * File name used for this lock
      *
      * @var string
      */
-    protected $lockFileName;
+    protected string $lockFileName;
 
     /**
      * File pointer if using flock method
@@ -52,6 +45,7 @@ class FlockLockStrategy implements LockStrategyInterface
      * FlockLockStrategy constructor.
      *
      * @param array $options
+     * @throws LockNotAcquiredException
      */
     public function __construct(array $options = [])
     {
@@ -63,11 +57,11 @@ class FlockLockStrategy implements LockStrategyInterface
 
     /**
      * @param string $subject
-     * @param boolean $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock.
+     * @param bool $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock.
      * @return void
      * @throws LockNotAcquiredException
      */
-    public function acquire(string $subject, bool $exclusiveLock)
+    public function acquire(string $subject, bool $exclusiveLock): void
     {
         $this->lockFileName = Utility\Files::concatenatePaths([$this->temporaryDirectory, md5($subject)]);
         $aquiredLock = false;
@@ -88,7 +82,7 @@ class FlockLockStrategy implements LockStrategyInterface
      * @throws LockNotAcquiredException
      * return void
      */
-    protected function configureLockDirectory(string $lockDirectory)
+    protected function configureLockDirectory(string $lockDirectory): void
     {
         Utility\Files::createDirectoryRecursively($lockDirectory);
         $this->temporaryDirectory = $lockDirectory;
@@ -97,13 +91,14 @@ class FlockLockStrategy implements LockStrategyInterface
     /**
      * Tries to open a lock file and apply the lock to it.
      *
-     * @param boolean $exclusiveLock
-     * @return boolean Was a lock aquired?
+     * @param bool $exclusiveLock
+     * @return bool Was a lock aquired?
      * @throws LockNotAcquiredException
+     * @throws \Exception
      */
     protected function tryToAcquireLock(bool $exclusiveLock): bool
     {
-        $this->filePointer = @fopen($this->lockFileName, 'w');
+        $this->filePointer = @fopen($this->lockFileName, 'wb');
         if ($this->filePointer === false) {
             throw new LockNotAcquiredException(sprintf('Lock file "%s" could not be opened', $this->lockFileName), 1386520596);
         }
@@ -122,17 +117,17 @@ class FlockLockStrategy implements LockStrategyInterface
         fclose($this->filePointer);
         $this->filePointer = null;
 
-        usleep(100 + rand(0, 100));
+        usleep(100 + random_int(0, 100));
         return false;
     }
 
     /**
      * apply flock to the opened lock file.
      *
-     * @param boolean $exclusiveLock
+     * @param bool $exclusiveLock
      * @throws LockNotAcquiredException
      */
-    protected function applyFlock(bool $exclusiveLock)
+    protected function applyFlock(bool $exclusiveLock): void
     {
         $lockOption = $exclusiveLock === true ? LOCK_EX : LOCK_SH;
 
@@ -144,7 +139,7 @@ class FlockLockStrategy implements LockStrategyInterface
     /**
      * Releases the lock
      *
-     * @return boolean true on success, false otherwise
+     * @return bool true on success, false otherwise
      */
     public function release(): bool
     {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Utility\Lock;
 
 /*
@@ -19,33 +20,18 @@ namespace Neos\Utility\Lock;
 class Lock
 {
     /**
-     * @var string
+     * @var LockManager|null
      */
-    protected static $lockStrategyClassName;
+    protected static ?LockManager $lockManager;
 
     /**
-     * @var LockManager
+     * @var LockStrategyInterface
      */
-    protected static $lockManager;
-
-    /**
-     * @var \Neos\Utility\Lock\LockStrategyInterface
-     */
-    protected $lockStrategy;
-
-    /**
-     * @var string
-     */
-    protected $subject;
-
-    /**
-     * @var boolean
-     */
-    protected $exclusiveLock = true;
+    protected LockStrategyInterface $lockStrategy;
 
     /**
      * @param string $subject
-     * @param boolean $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock. An exclusive lock ist the default.
+     * @param bool $exclusiveLock true to, acquire an exclusive (write) lock, false for a shared (read) lock. An exclusive lock ist the default.
      */
     public function __construct(string $subject, bool $exclusiveLock = true)
     {
@@ -69,23 +55,21 @@ class Lock
      *
      * Must be nullable especially for testing
      *
-     * @param LockManager $lockManager
+     * @param LockManager|null $lockManager
+     * @return void
      */
-    public static function setLockManager(LockManager $lockManager = null)
+    public static function setLockManager(?LockManager $lockManager): void
     {
         static::$lockManager = $lockManager;
     }
 
     /**
      * Releases the lock
-     * @return boolean true on success, false otherwise
+     * @return bool true on success, false otherwise
      */
     public function release(): bool
     {
-        if ($this->lockStrategy instanceof LockStrategyInterface) {
-            return $this->lockStrategy->release();
-        }
-        return true;
+        return $this->lockStrategy->release();
     }
 
     /**

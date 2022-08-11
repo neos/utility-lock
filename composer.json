@@ -5,7 +5,7 @@
   "homepage": "http://flow.neos.io",
   "license": "MIT",
   "require": {
-    "php": "^7.2 || ^8.0",
+    "php": "^7.4 || ^8.0",
     "neos/flow": "*",
     "neos/utility-files": "*"
   },
@@ -21,6 +21,11 @@
   "autoload-dev": {
     "psr-4": {
       "Neos\\Flow\\Utility\\Lock\\Tests\\": "Tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "neos/composer-plugin": true
     }
   }
 }
